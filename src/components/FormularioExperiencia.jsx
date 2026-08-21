@@ -1,155 +1,483 @@
 import { useState } from "react";
 
-function FormularioExperiencia({ datos, setDatos, anterior, siguiente }) {
-  // Estados temporales para los campos del formulario
-  const [empresa, setEmpresa] = useState("");
-  const [cargo, setCargo] = useState("");
-  const [tiempo, setTiempo] = useState("");
-  const [funciones, setFunciones] = useState("");
-  const [habilidades, setHabilidades] = useState("");
+function FormularioExperiencia({
+    datos,
+    setDatos,
+    anterior,
+    siguiente
+}) {
 
-  // Agregar una nueva experiencia a la lista compartida
-  const agregarExperiencia = () => {
-    if (
-      empresa.trim() === "" ||
-      cargo.trim() === "" ||
-      tiempo.trim() === "" ||
-      funciones.trim() === "" ||
-      habilidades.trim() === ""
-    ) {
-      alert("Por favor complete todos los campos de la experiencia.");
-      return;
-    }
+    
 
-    const nuevaExperiencia = {
-      empresa: empresa.trim(),
-      cargo: cargo.trim(),
-      tiempo: tiempo.trim(),
-      funciones: funciones.trim(),
-      habilidades: habilidades.trim()
+    const [empresa, setEmpresa] = useState("");
+    const [experiencia, setExperiencia] = useState("");
+    const [cargo, setCargo] = useState("");
+
+    
+
+    const [nuevaHabilidad, setNuevaHabilidad] = useState("");
+
+    
+
+    const [habilidades, setHabilidades] = useState([]);
+
+  
+
+    const [nuevaFuncion, setNuevaFuncion] = useState("");
+
+    
+
+    const [funciones, setFunciones] = useState([]);
+
+
+   
+
+    const agregarHabilidad = () => {
+
+        if (nuevaHabilidad.trim() === "") {
+            return;
+        }
+
+        setHabilidades([
+            ...habilidades,
+            nuevaHabilidad
+        ]);
+
+        setNuevaHabilidad("");
     };
 
-    setDatos((prev) => ({
-      ...prev,
-      experiencias: [...(prev.experiencias || []), nuevaExperiencia]
-    }));
 
-    // Limpiar inputs
-    setEmpresa("");
-    setCargo("");
-    setTiempo("");
-    setFunciones("");
-    setHabilidades("");
-  };
+   
 
-  // Eliminar una experiencia seleccionada de la lista
-  const eliminarExperiencia = (indice) => {
-    const nuevasExperiencias = datos.experiencias.filter((_, i) => i !== indice);
-    setDatos((prev) => ({
-      ...prev,
-      experiencias: nuevasExperiencias
-    }));
-  };
+    const eliminarHabilidad = (indice) => {
 
-  const continuar = (e) => {
-    e.preventDefault();
-    siguiente();
-  };
+        setHabilidades(
+            habilidades.filter(
+                (_, i) => i !== indice
+            )
+        );
+    };
 
-  return (
-    <div className="formulario">
-      <h2>Experiencia Laboral</h2>
 
-      <form onSubmit={continuar}>
-        <div className="grupo">
-          <label>Empresa</label>
-          <input
-            type="text"
-            placeholder="Ingrese la empresa"
-            value={empresa}
-            onChange={(e) => setEmpresa(e.target.value)}
-          />
-        </div>
+    // AGREGAR FUNCIÓN
 
-        <div className="grupo">
-          <label>Cargo</label>
-          <input
-            type="text"
-            placeholder="Ingrese el cargo"
-            value={cargo}
-            onChange={(e) => setCargo(e.target.value)}
-          />
-        </div>
+    const agregarFuncion = () => {
 
-        <div className="grupo">
-          <label>Tiempo de Experiencia</label>
-          <input
-            type="text"
-            placeholder="Ejemplo: 1 año"
-            value={tiempo}
-            onChange={(e) => setTiempo(e.target.value)}
-          />
-        </div>
+        if (nuevaFuncion.trim() === "") {
+            return;
+        }
 
-        <div className="grupo">
-          <label>Funciones Desempeñadas</label>
-          <textarea
-            placeholder="Escriba las funciones desempeñadas"
-            value={funciones}
-            onChange={(e) => setFunciones(e.target.value)}
-          />
-        </div>
+        setFunciones([
+            ...funciones,
+            nuevaFuncion
+        ]);
 
-        <div className="grupo">
-          <label>Habilidades Técnicas</label>
-          <input
-            type="text"
-            placeholder="Ejemplo: HTML, CSS, JavaScript, React..."
-            value={habilidades}
-            onChange={(e) => setHabilidades(e.target.value)}
-          />
-        </div>
+        setNuevaFuncion("");
+    };
 
-        <button type="button" onClick={agregarExperiencia}>
-          + Agregar Experiencia
-        </button>
 
-        {/* Lista de experiencias guardadas */}
-        <div className="lista-experiencias">
-          <h3>Experiencias Registradas</h3>
-          {!datos.experiencias || datos.experiencias.length === 0 ? (
-            <p className="sin-experiencias">No hay experiencias registradas.</p>
-          ) : (
-            datos.experiencias.map((exp, indice) => (
-              <div className="experiencia-item" key={indice}>
-                <div>
-                  <h4>{exp.cargo} - {exp.empresa}</h4>
-                  <p><strong>Tiempo:</strong> {exp.tiempo}</p>
-                  <p><strong>Funciones:</strong> {exp.funciones}</p>
-                  <p><strong>Habilidades:</strong> {exp.habilidades}</p>
+    // ELIMINAR FUNCIÓN
+
+    const eliminarFuncion = (indice) => {
+
+        setFunciones(
+            funciones.filter(
+                (_, i) => i !== indice
+            )
+        );
+    };
+
+
+    // AGREGAR EXPERIENCIA COMPLETA
+
+    const agregarExperiencia = () => {
+
+        if (
+            empresa.trim() === "" ||
+            cargo.trim() === ""
+        ) {
+            alert("Ingrese la empresa y el cargo");
+            return;
+        }
+
+        const nuevaExperiencia = {
+
+            empresa: empresa,
+
+            cargo: cargo,
+
+            tiempo: experiencia,
+
+            habilidades: habilidades,
+
+            funciones: funciones
+
+        };
+
+
+        setDatos({
+
+            ...datos,
+
+            experiencias: [
+
+                ...datos.experiencias,
+
+                nuevaExperiencia
+
+            ]
+
+        });
+
+
+        // Limpiar todo para una nueva experiencia
+
+        setEmpresa("");
+
+        setExperiencia("");
+
+        setCargo("");
+
+        setHabilidades([]);
+
+        setFunciones([]);
+
+    };
+
+
+    // ELIMINAR EXPERIENCIA COMPLETA
+
+    const eliminarExperiencia = (indice) => {
+
+        setDatos({
+
+            ...datos,
+
+            experiencias: datos.experiencias.filter(
+                (_, i) => i !== indice
+            )
+
+        });
+
+    };
+
+
+    return (
+
+        <div className="formulario">
+
+            <h2>Experiencia Laboral</h2>
+
+
+            
+
+            <div className="grupo">
+
+                <label>Empresa</label>
+
+                <input
+                    type="text"
+                    placeholder="Ingrese la empresa"
+                    value={empresa}
+                    onChange={(e) =>
+                        setEmpresa(e.target.value)
+                    }
+                />
+
+            </div>
+
+
+        
+
+            <div className="grupo">
+
+                <label>Tiempo de Experiencia</label>
+
+                <input
+                    type="text"
+                    placeholder="Ejemplo: 1 año"
+                    value={experiencia}
+                    onChange={(e) =>
+                        setExperiencia(e.target.value)
+                    }
+                />
+
+            </div>
+
+
+            
+
+            <div className="grupo">
+
+                <label>Cargo</label>
+
+                <input
+                    type="text"
+                    placeholder="Ingrese el cargo"
+                    value={cargo}
+                    onChange={(e) =>
+                        setCargo(e.target.value)
+                    }
+                />
+
+            </div>
+
+
+            
+            <div className="grupo">
+
+                <label>Habilidades Técnicas</label>
+
+                <div className="curso-agregar">
+
+                    <input
+                        type="text"
+                        placeholder="Ejemplo: React"
+                        value={nuevaHabilidad}
+                        onChange={(e) =>
+                            setNuevaHabilidad(e.target.value)
+                        }
+                    />
+
+                    <button
+                        type="button"
+                        onClick={agregarHabilidad}
+                    >
+                        + Agregar
+                    </button>
+
                 </div>
+
+
+                <div className="lista-cursos">
+
+                    {habilidades.map(
+                        (habilidad, indice) => (
+
+                            <div
+                                className="curso-item"
+                                key={indice}
+                            >
+
+                                <span>
+                                    {habilidad}
+                                </span>
+
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        eliminarHabilidad(indice)
+                                    }
+                                >
+                                    Eliminar
+                                </button>
+
+                            </div>
+
+                        )
+                    )}
+
+                </div>
+
+            </div>
+
+
+            
+
+            <div className="grupo">
+
+                <label>Funciones Desempeñadas</label>
+
+                <div className="curso-agregar">
+
+                    <input
+                        type="text"
+                        placeholder="Ejemplo: Desarrollo de páginas web"
+                        value={nuevaFuncion}
+                        onChange={(e) =>
+                            setNuevaFuncion(e.target.value)
+                        }
+                    />
+
+                    <button
+                        type="button"
+                        onClick={agregarFuncion}
+                    >
+                        + Agregar
+                    </button>
+
+                </div>
+
+
+                <div className="lista-cursos">
+
+                    {funciones.map(
+                        (funcion, indice) => (
+
+                            <div
+                                className="curso-item"
+                                key={indice}
+                            >
+
+                                <span>
+                                    {funcion}
+                                </span>
+
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        eliminarFuncion(indice)
+                                    }
+                                >
+                                    Eliminar
+                                </button>
+
+                            </div>
+
+                        )
+                    )}
+
+                </div>
+
+            </div>
+
+
+           
+
+            <div className="botones">
+
                 <button
-                  type="button"
-                  onClick={() => eliminarExperiencia(indice)}
+                    type="button"
+                    onClick={agregarExperiencia}
                 >
-                  Eliminar
+                    + Agregar experiencia
                 </button>
-              </div>
-            ))
-          )}
+
+            </div>
+
+
+           
+
+            <div className="lista-experiencias">
+
+                <h3>Experiencias Registradas</h3>
+
+
+                {datos.experiencias.length === 0 ? (
+
+                    <p>
+                        No hay experiencias registradas.
+                    </p>
+
+                ) : (
+
+                    datos.experiencias.map(
+                        (exp, indice) => (
+
+                            <div
+                                className="experiencia-item"
+                                key={indice}
+                            >
+
+                                <h4>
+                                    {exp.cargo}
+                                </h4>
+
+                                <p>
+                                    <strong>
+                                        Empresa:
+                                    </strong>{" "}
+                                    {exp.empresa}
+                                </p>
+
+                                <p>
+                                    <strong>
+                                        Tiempo:
+                                    </strong>{" "}
+                                    {exp.tiempo}
+                                </p>
+
+
+                                <p>
+                                    <strong>
+                                        Habilidades:
+                                    </strong>
+                                </p>
+
+                                <ul>
+
+                                    {exp.habilidades.map(
+                                        (habilidad, i) => (
+                                            <li key={i}>
+                                                {habilidad}
+                                            </li>
+                                        )
+                                    )}
+
+                                </ul>
+
+
+                                <p>
+                                    <strong>
+                                        Funciones:
+                                    </strong>
+                                </p>
+
+                                <ul>
+
+                                    {exp.funciones.map(
+                                        (funcion, i) => (
+                                            <li key={i}>
+                                                {funcion}
+                                            </li>
+                                        )
+                                    )}
+
+                                </ul>
+
+
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        eliminarExperiencia(indice)
+                                    }
+                                >
+                                    Eliminar experiencia
+                                </button>
+
+                            </div>
+
+                        )
+                    )
+
+                )}
+
+            </div>
+
+
+            
+
+            <div className="botones">
+
+                <button
+                    type="button"
+                    onClick={anterior}
+                >
+                    Anterior
+                </button>
+
+                <button
+                    type="button"
+                    onClick={siguiente}
+                >
+                    Vista Previa
+                </button>
+
+            </div>
+
         </div>
 
-        <div className="botones">
-          <button type="button" onClick={anterior}>
-            Anterior
-          </button>
-          <button type="submit">
-            Vista Previa
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+    );
 }
 
 export default FormularioExperiencia;
