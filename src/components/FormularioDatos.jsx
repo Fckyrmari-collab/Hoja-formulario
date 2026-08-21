@@ -5,8 +5,20 @@ function FormularioDatos({ datos, setDatos, siguiente }) {
 
   const continuar = (e) => {
     e.preventDefault();
+    if (
+        datos.nombre.trim() === "" ||
+        datos.edad.trim() === "" ||
+        datos.ciudad.trim() === "" ||
+        datos.correo.trim() === "" ||
+        datos.programa.trim() === "" ||
+        datos.ficha.trim() === ""
+    ) {
+        alert("Por favor, complete todos los campos antes de continuar.");
+        return;
+    }
+
     siguiente();
-  };
+};
 
   return (
     <div className="formulario">

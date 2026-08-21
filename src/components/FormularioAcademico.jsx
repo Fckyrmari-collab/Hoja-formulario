@@ -37,8 +37,35 @@ function FormularioAcademico({ datos, setDatos, anterior, siguiente }) {
 
   const continuar = (e) => {
     e.preventDefault();
+   
+    if (
+        datos.nivel.trim() === "" ||
+        datos.titulo.trim() === "" ||
+        datos.institucion.trim() === "" ||
+        datos.graduacion.trim() === ""
+    ) {
+        alert("Por favor, complete todos los campos académicos antes de continuar.");
+        return;
+    }
+     
+    if (datos.cursos.length === 0) {
+
+        alert("Debe agregar al menos un curso.");
+        return;
+
+    }
+
+
+    if (datos.experiencias.length === 0) {
+
+        alert("Debe agregar al menos una experiencia laboral.");
+        return;
+
+    }
+
+
     siguiente();
-  };
+};
 
   return (
     <div className="formulario">
