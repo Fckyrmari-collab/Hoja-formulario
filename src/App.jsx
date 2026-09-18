@@ -7,7 +7,6 @@ import FormularioExperiencia from "./components/FormularioExperiencia.jsx";
 import VistaPrevia from "./components/VistaPrevia.jsx";
 import "./App.css";
 
-
 function App() {
   const [paso, setPaso] = useState(1);
 
